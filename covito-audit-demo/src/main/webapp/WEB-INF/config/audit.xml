@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<description>Spring Configuration</description>
+	<aop:aspectj-autoproxy />
+
+	<bean id="auditTrailManagementAspect" class="org.covito.audit.api.AuditTrailManagementAspect" >
+		<constructor-arg name="applicationCode" value="REST"/>
+		<constructor-arg name="principalResolver" ref="principalResolver" />
+		<constructor-arg name="trailManagers" ref="auditTrailManager" />
+		<constructor-arg name="actionResolverMap" ref="auditActionResolverMap" />
+		<constructor-arg name="resourceResolverMap" ref="auditResourceResolverMap" />
+	</bean>
+
+	<util:map id="auditActionResolverMap">
+		<entry key="REST_RESOLVER">
+			<ref local="restActionResolver" />
+		</entry>
+	</util:map>
+
+	<util:map id="auditResourceResolverMap">
+		<entry key="REST_RESOURCE_RESOLVER">
+			<bean class="org.covito.audit.resolver.ObjectToStringResourceResolver" />
+		</entry>
+	</util:map>
+
+	<bean id="principalResolver" class="org.covito.audit.demo.AppPrincipalResolver" />
+		
+	<bean id="restActionResolver" class="org.covito.audit.resolver.DefaultAuditActionResolver" >
+		<constructor-arg name="successSuffix" value="_SUCCESS"/>
+		<constructor-arg name="failureSuffix" value="_FAILED"/>
+	</bean>
+
+	<bean id="auditTrailManager" class="org.covito.audit.trail.ConsoleAuditTrailManager" />
+	
+</beans>
