@@ -33,20 +33,19 @@ public final class AuditActionContext implements Serializable {
 	/** Server IP Address */
 	private final String serverIpAddress;
 
-	public AuditActionContext(String principal, String resource, String action,String applicationCode, Date performedDate, String clientIpAddress,
+	public AuditActionContext(String principal, String resource, String action,String applicationCode, String clientIpAddress,
 			String serverIpAddress, AuditPointRuntimeInfo runtimeInfo) {
 		Assert.assertNotNull(principal, "'principal' cannot be null.\n" + getDiagnosticInfo(runtimeInfo));
 		Assert.assertNotNull(resource, "'resource' cannot be null.\n" + getDiagnosticInfo(runtimeInfo));
 		Assert.assertNotNull(action, "'action' cannot be null.\n" + getDiagnosticInfo(runtimeInfo));
 		Assert.assertNotNull(applicationCode, "'applicationCode' cannot be null.\n" + getDiagnosticInfo(runtimeInfo));
-		Assert.assertNotNull(performedDate, "'performedDate' cannot be null.\n"+ getDiagnosticInfo(runtimeInfo));
 		Assert.assertNotNull(clientIpAddress, "'clientIpAddress' cannot be null.\n" + getDiagnosticInfo(runtimeInfo));
 		Assert.assertNotNull(serverIpAddress, "'serverIpAddress' cannot be null.\n" + getDiagnosticInfo(runtimeInfo));
 		this.principal = principal;
 		this.resource = resource;
 		this.action = action;
 		this.applicationCode = applicationCode;
-		this.performedDate = new Date(performedDate.getTime());
+		this.performedDate = new Date();
 		this.clientIpAddress = clientIpAddress;
 		this.serverIpAddress = serverIpAddress;
 	}

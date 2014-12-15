@@ -1,6 +1,5 @@
 package org.covito.audit.api;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -111,11 +110,10 @@ public final class AuditTrailManagementAspect  {
 		final String applicationCode = (audit.appCode() != null && audit.appCode().length() > 0) ? audit
 				.appCode() : this.applicationCode;
 		final ClientInfo clientInfo = this.clientInfoResolver.resolveFrom(joinPoint, retVal);
-		final Date actionDate = new Date();
 		final AuditPointRuntimeInfo runtimeInfo = new AspectJAuditPointRuntimeInfo(joinPoint);
 		for (final String auditableResource : auditableResources) {
 			final AuditActionContext auditContext = new AuditActionContext(currentPrincipal, auditableResource, action,
-					applicationCode, actionDate, clientInfo.getClientIpAddress(), clientInfo.getServerIpAddress(),
+					applicationCode, clientInfo.getClientIpAddress(), clientInfo.getServerIpAddress(),
 					runtimeInfo);
 			// Finally record the audit trail info
 			for (AuditTrailManager manager : trailManagers) {
